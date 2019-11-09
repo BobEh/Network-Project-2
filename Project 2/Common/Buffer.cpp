@@ -1,6 +1,6 @@
 #include "Buffer.h"
 
-Buffer::Buffer(size_t size)	: _readIndex(0), _writeIndex(0)
+Buffer::Buffer(size_t size) : _readIndex(0), _writeIndex(0)
 {
 	_buffer.resize(size);
 }
