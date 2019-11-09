@@ -1,9 +1,3 @@
-#include <conio.h>
-#include <cctype>
-#include <iostream>
-#include <string>
-#include <vector>
-
 #define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
 #define DISABLE_NEWLINE_AUTO_RETURN  0x0008
 
@@ -15,102 +9,18 @@
 #define WIN32_LEAN_AND_MEAN
 #endif
 
-#include <windows.h>
-#include <WinSock2.h>
+#include "Buffer.h"
+#include "Connection.h"
+#include "User.h"
+#include "MessageTypes.h"
+
+#include <conio.h>
 
 bool isOpen;
 
 std::string userCommandString;
-User user;
 
-class Buffer
-{
-	uint8_t _readIndex;
-	uint8_t _writeIndex;
-	std::vector<uint8_t> _buffer;
-	Buffer(int size)
-	{
-		_buffer.resize(size);
-	}
-	void writeToBuffer(uint32_t input)
-	{
-		_buffer.at(_writeIndex) = input;
-		_buffer.at(_writeIndex + 1) = input >> 8;
-		_buffer.at(_writeIndex + 2) = input >> 16;
-		_buffer.at(_writeIndex + 3) = input >> 24;
-
-		_writeIndex += 4;
-	}
-	void writeToBufferAtIndex(uint32_t input, uint8_t index)
-	{
-
-		_buffer[index] = input;
-		_buffer[index + 1] = input >> 8;
-		_buffer[index + 2] = input >> 16;
-		_buffer[index + 3] = input >> 24;
-	}
-	void writeStringToBuffer(std::string input)
-	{
-		memcpy(&(_buffer.at(_writeIndex)), &(input.at(0)), input.length());
-
-		int stringLength = input.length();
-		_writeIndex += stringLength;
-	}
-	void writeStringToBufferAtIndes(std::string input, uint8_t index)
-	{
-		memcpy(&(_buffer.at(index)), &(input.at(0)), input.length());
-	}
-	uint32_t readFromBuffer()
-	{
-		uint32_t output = 0;
-
-		output |= _buffer.at(_readIndex);
-		output |= _buffer.at(_readIndex + 1) << 8;
-		output |= _buffer.at(_readIndex + 2) << 16;
-		output |= _buffer.at(_readIndex + 3) << 24;
-
-		_readIndex += 4;
-
-		return output;
-	}
-};
-
-class Connection
-{
-	SOCKET _socket;
-	int _numBytes;
-	int _length;
-
-	Connection(SOCKET socket) : protobuf(Buffer(512)), _numBytes(0), _length(0), _socket(socket)
-	{
-		_numBytes = 0;
-		_length = 0;
-
-	}
-};
-
-class User
-{
-	User()
-	{
-		WSAData WSAData;
-		int result;
-
-		result = WSAStartup(MAKEWORD(2, 2), &WSAData);
-	}
-	void joinServer(std::string address, std::string port)
-	{
-		struct sockaddr_in server;
-		struct hostent* host;
-		CHAR serverIp[128];
-		int result;
-
-		int portInt = std::stoi(port);
-		strcpy_s(serverIp, sizeof(serverIp), address.c_str());
-
-		
-	}
-};
+User theUser;
 
 void ParseInput(std::string& command, std::string& arg1, std::string& arg2, std::string& message)
 {
@@ -166,8 +76,27 @@ void ProcessInput()
 
 	if (command == "/connect")
 	{
+		theUser.joinServer(arg1, arg2);
 
 	}
+	else if (command == "/join")
+	{
+		theUser.ConfigureMessage(JoinRoom, arg1, arg2, message);
+	}
+	else if (command == "/send")
+	{
+		theUser.ConfigureMessage(MessageRoom, arg1, arg2, message);
+	}
+}
+
+void ClearMessage()
+{
+	userCommandString = "";
+}
+
+void PrintMessage()
+{
+	printf("\x1B[2K\r$ %s", userCommandString.c_str());
 }
 
 int main()
@@ -186,6 +115,8 @@ int main()
 	isOpen = true;
 	int ch;
 
+	PrintMessage();
+
 	while (isOpen)
 	{
 		if (_kbhit())
@@ -195,7 +126,25 @@ int main()
 			if (ch == ENTER)
 			{
 				ProcessInput();
+				ClearMessage();
+				PrintMessage();
+			}
+			else if (ch == BACKSPACE)
+			{
+				if (!userCommandString.empty())
+				{
+					userCommandString = userCommandString.substr(0, userCommandString.length() - 1);
+					PrintMessage();
+				}
+			}
+			else
+			{
+				userCommandString.push_back(ch);
+				PrintMessage();
 			}
 		}
+
+		theUser.Update();
+		PrintMessage();
 	}
 }
