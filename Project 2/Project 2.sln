@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "ChatClient\ChatCl
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "ChatServer\ChatServer.vcxproj", "{E9AF104F-0DD7-48F9-B70D-54B48046CA51}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Authentication", "Authentication\Authentication.vcxproj", "{5F8B451F-2FB9-49CD-8BAF-EFAADEB0C18F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Authentication", "ChatServer - Copy\Authentication.vcxproj", "{5A756523-7AB3-4706-B77D-CC72A2581056}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,14 +33,14 @@ Global
 		{E9AF104F-0DD7-48F9-B70D-54B48046CA51}.Release|x64.Build.0 = Release|x64
 		{E9AF104F-0DD7-48F9-B70D-54B48046CA51}.Release|x86.ActiveCfg = Release|Win32
 		{E9AF104F-0DD7-48F9-B70D-54B48046CA51}.Release|x86.Build.0 = Release|Win32
-		{5F8B451F-2FB9-49CD-8BAF-EFAADEB0C18F}.Debug|x64.ActiveCfg = Debug|x64
-		{5F8B451F-2FB9-49CD-8BAF-EFAADEB0C18F}.Debug|x64.Build.0 = Debug|x64
-		{5F8B451F-2FB9-49CD-8BAF-EFAADEB0C18F}.Debug|x86.ActiveCfg = Debug|Win32
-		{5F8B451F-2FB9-49CD-8BAF-EFAADEB0C18F}.Debug|x86.Build.0 = Debug|Win32
-		{5F8B451F-2FB9-49CD-8BAF-EFAADEB0C18F}.Release|x64.ActiveCfg = Release|x64
-		{5F8B451F-2FB9-49CD-8BAF-EFAADEB0C18F}.Release|x64.Build.0 = Release|x64
-		{5F8B451F-2FB9-49CD-8BAF-EFAADEB0C18F}.Release|x86.ActiveCfg = Release|Win32
-		{5F8B451F-2FB9-49CD-8BAF-EFAADEB0C18F}.Release|x86.Build.0 = Release|Win32
+		{5A756523-7AB3-4706-B77D-CC72A2581056}.Debug|x64.ActiveCfg = Debug|x64
+		{5A756523-7AB3-4706-B77D-CC72A2581056}.Debug|x64.Build.0 = Debug|x64
+		{5A756523-7AB3-4706-B77D-CC72A2581056}.Debug|x86.ActiveCfg = Debug|Win32
+		{5A756523-7AB3-4706-B77D-CC72A2581056}.Debug|x86.Build.0 = Debug|Win32
+		{5A756523-7AB3-4706-B77D-CC72A2581056}.Release|x64.ActiveCfg = Release|x64
+		{5A756523-7AB3-4706-B77D-CC72A2581056}.Release|x64.Build.0 = Release|x64
+		{5A756523-7AB3-4706-B77D-CC72A2581056}.Release|x86.ActiveCfg = Release|Win32
+		{5A756523-7AB3-4706-B77D-CC72A2581056}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

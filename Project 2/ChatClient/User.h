@@ -12,7 +12,7 @@ public:
 	User();
 
 	void joinServer(std::string address, std::string port);
-
+	void Authenticate(std::string email, std::string password);
 	void Update();
 
 	void ConfigureMessage(MessageType type, std::string arg1, std::string arg2, std::string message);

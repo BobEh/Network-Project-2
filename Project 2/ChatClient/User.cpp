@@ -68,6 +68,10 @@ void User::joinServer(std::string address, std::string port)
 		return;
 	}
 }
+void User::Authenticate(std::string email, std::string password)
+{
+
+}
 
 void User::Update()
 {

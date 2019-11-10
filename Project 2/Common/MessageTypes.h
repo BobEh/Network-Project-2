@@ -1,4 +1,5 @@
 #pragma once
+#define HEADER_SIZE 8
 
 enum MessageType
 {

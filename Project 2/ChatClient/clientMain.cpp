@@ -71,7 +71,6 @@ void ProcessInput()
 	if (command == "/connect")
 	{
 		theUser.joinServer(arg1, arg2);
-
 	}
 	else if (command == "/join")
 	{
@@ -80,6 +79,10 @@ void ProcessInput()
 	else if (command == "/send")
 	{
 		theUser.ConfigureMessage(MessageRoom, arg1, arg2, message);
+	}
+	else if (command == "/auth")
+	{
+		theUser.Authenticate(arg1, arg2);
 	}
 }
 
