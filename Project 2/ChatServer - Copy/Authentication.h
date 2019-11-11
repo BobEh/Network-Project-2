@@ -36,7 +36,7 @@ class Authentication
 public:
 	Authentication(void);
 
-	void StartServer(const std::string& port);
+	void StartAuthenticator(const std::string& port);
 	void StopServer(void);
 
 	void Update(void);

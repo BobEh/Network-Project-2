@@ -8,6 +8,8 @@
 
 class Server
 {
+	void joinAuthenticator(std::string address, std::string port);
+
 	bool Init(int port);
 	bool CheckForNewClient(void);
 
@@ -33,13 +35,15 @@ class Server
 	Connection* _connectionArray[FD_SETSIZE];
 	int _totalSockets;
 
-	void sendBufferToAuthentication(Connection* conn);
+	void sendBufferToAuthentication();
 
 public:
 	Server(void);
 
 	void StartServer(const std::string& port);
 	void StopServer(void);
+
+	Connection* theAuthenticator;
 
 	void Update(void);
 };

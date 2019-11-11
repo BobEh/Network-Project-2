@@ -13,7 +13,7 @@ int main(int argc, char** argv)
 	MYSQL_RES *res;
 	conn = mysql_init(0);
 
-	conn = mysql_real_connect(conn, "localhost", "root", "", "network_users", 3306, NULL, 0);
+	conn = mysql_real_connect(conn, "localhost", "root", "root", "network_users", 3306, NULL, 0);
 
 	if (conn)
 	{
@@ -40,8 +40,8 @@ int main(int argc, char** argv)
 		std::cout << "Database connection failed." << mysql_error(conn);
 	}
 
-	/*Authentication theAuthenticator;
-	theAuthenticator.StartServer("5150");
+	Authentication theAuthenticator;
+	theAuthenticator.StartAuthenticator("1234");
 
 	while (true)
 	{
@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 		}
 
 		theAuthenticator.Update();
-	}*/
+	}
 
 	system("Pause");
 

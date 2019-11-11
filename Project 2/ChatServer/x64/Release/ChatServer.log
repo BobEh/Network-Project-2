@@ -1,0 +1,50 @@
+﻿  buffer.cpp
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(28,35): warning C4267:  'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(61,28): warning C4244:  '=': conversion from 'uint16_t' to '_Ty', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(61,28): warning C4244:         with
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(61,28): warning C4244:         [
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(61,28): warning C4244:             _Ty=uint8_t
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(61,28): warning C4244:         ]
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(68,22): warning C4244:  '=': conversion from 'uint16_t' to '_Ty', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(68,22): warning C4244:         with
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(68,22): warning C4244:         [
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(68,22): warning C4244:             _Ty=uint8_t
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(68,22): warning C4244:         ]
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(94,33): warning C4267:  'argument': conversion from 'size_t' to 'const _Elem', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(94,33): warning C4267:         with
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(94,33): warning C4267:         [
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(94,33): warning C4267:             _Elem=char
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(94,33): warning C4267:         ]
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(102,22): warning C4267:  '+=': conversion from 'size_t' to 'uint8_t', possible loss of data
+  connection.cpp
+  Server.cpp
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(108,33): warning C4267:  'argument': conversion from 'size_t' to 'const _Elem', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(108,33): warning C4267:         with
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(108,33): warning C4267:         [
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(108,33): warning C4267:             _Elem=char
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\Common\buffer.cpp(108,33): warning C4267:         ]
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(82,29): warning C4018:  '<': signed/unsigned mismatch
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(100,42): warning C4018:  '<': signed/unsigned mismatch
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(77,6): warning C4101:  'result': unreferenced local variable
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(148,9): warning C4477:  'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'SOCKET'
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(148,9): message :  consider using '%lld' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(148,9): message :  consider using '%Id' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(148,9): message :  consider using '%I64d' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(155,9): warning C4477:  'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'SOCKET'
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(155,9): message :  consider using '%lld' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(155,9): message :  consider using '%Id' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(155,9): message :  consider using '%I64d' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(162,33): warning C4018:  '<': signed/unsigned mismatch
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(307,61): warning C4244:  'argument': conversion from 'SOCKET' to 'int', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(339,49): warning C4244:  'argument': conversion from 'SOCKET' to 'int', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(361,49): warning C4244:  'argument': conversion from 'SOCKET' to 'int', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(394,40): warning C4267:  'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(395,38): warning C4267:  'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(401,50): warning C4267:  'argument': conversion from 'size_t' to 'uint32_t', possible loss of data
+  serverMain.cpp
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(403,49): warning C4267:  'argument': conversion from 'size_t' to 'uint32_t', possible loss of data
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 380 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  ChatServer.vcxproj -> D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\x64\Release\Server.exe

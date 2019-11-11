@@ -34,7 +34,7 @@ void Authentication::StopServer(void)
 	closesocket(_listenSocket);
 }
 
-void Authentication::StartServer(const std::string& portString)
+void Authentication::StartAuthenticator(const std::string& portString)
 {
 	// Convert the provided port as string to an int value
 	int port = std::stoi(portString);

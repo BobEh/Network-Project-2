@@ -1,0 +1,9 @@
+﻿  buffer.cpp
+  connection.cpp
+  User.cpp
+  clientMain.cpp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 182 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  ChatClient.vcxproj -> D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\x64\Release\Client.exe

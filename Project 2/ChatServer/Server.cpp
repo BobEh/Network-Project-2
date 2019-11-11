@@ -222,6 +222,58 @@ void Server::MessageFromUser(Connection* conn, int index)
 	}
 }
 
+void Server::joinAuthenticator(std::string address, std::string port)
+{
+	struct sockaddr_in server;
+	struct hostent* host;
+	CHAR serverIp[128];
+	int result;
+
+	int portInt = std::stoi(port);
+	strcpy_s(serverIp, sizeof(serverIp), address.c_str());
+
+	theAuthenticator->_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+	server.sin_family = AF_INET;
+	server.sin_port = htons(portInt);
+	server.sin_addr.s_addr = inet_addr(serverIp);
+	if (server.sin_addr.s_addr == INADDR_NONE)
+	{
+		host = gethostbyname(serverIp);
+		CopyMemory(&server.sin_addr, host->h_addr_list[0], host->h_length);
+	}
+
+	std::cout << "Connecting to the server\n";
+	result = connect(theAuthenticator->_socket, (struct sockaddr*) & server, sizeof(server));
+	if (result == SOCKET_ERROR)
+	{
+
+		pollfd poll;
+		poll.fd = theAuthenticator->_socket;
+		poll.events = POLLRDNORM | POLLWRNORM;
+
+		int pollResult;
+		pollResult = WSAPoll(&poll, 1, 5000);
+		if (!pollResult)
+		{
+			theAuthenticator->_socket = INVALID_SOCKET;
+			return;
+		}
+
+		else
+		{
+			theAuthenticator->_socket = INVALID_SOCKET;
+			return;
+		}
+	}
+	ULONG NonBlock = 1;
+	if (ioctlsocket(theAuthenticator->_socket, FIONBIO, &NonBlock) == SOCKET_ERROR)
+	{
+		theAuthenticator->_socket = INVALID_SOCKET;
+		return;
+	}
+}
+
 void Server::ProcessMessage(Connection* conn)
 {
 	int packetSize = conn->protobuf.readFromBuffer32();
@@ -258,16 +310,16 @@ void Server::ProcessMessage(Connection* conn)
 
 		case MessageType::AuthUser:
 		{
-			sendBufferToAuthentication(conn);
+			sendBufferToAuthentication();
 
 			break;
 		}
 	}
 }
 
-void Server::sendBufferToAuthentication(Connection* conn)
+void Server::sendBufferToAuthentication()
 {
-	int result = send(conn->_socket, &(char&)(conn->protobuf[0]), conn->protobuf._writeIndex, 0);
+	int result = send(theAuthenticator->_socket, &(char&)(theAuthenticator->protobuf[0]), theAuthenticator->protobuf._writeIndex, 0);
 
 	if (result == 0)
 	{
