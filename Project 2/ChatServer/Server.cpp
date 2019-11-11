@@ -255,6 +255,23 @@ void Server::ProcessMessage(Connection* conn)
 			SendUserMessageToRoom(conn, roomName, addIdToMessage(conn->_socket, userMessage));
 			break;
 		}
+
+		case MessageType::AuthUser:
+		{
+			sendBufferToAuthentication(conn);
+
+			break;
+		}
+	}
+}
+
+void Server::sendBufferToAuthentication(Connection* conn)
+{
+	int result = send(conn->_socket, &(char&)(conn->protobuf[0]), conn->protobuf._writeIndex, 0);
+
+	if (result == 0)
+	{
+		return;
 	}
 }
 

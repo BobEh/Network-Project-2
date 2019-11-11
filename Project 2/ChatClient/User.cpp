@@ -156,6 +156,13 @@ void User::ConfigureMessage(MessageType type, std::string arg1, std::string arg2
 		theServer->protobuf.writeToBuffer32(message.length());
 		theServer->protobuf.writeStringToBuffer(message);
 	}
+	else if (type == AuthUser)
+	{
+		theServer->protobuf.writeToBuffer32(arg1.length());
+		theServer->protobuf.writeStringToBuffer(arg1);
+		theServer->protobuf.writeToBuffer32(arg2.length());
+		theServer->protobuf.writeStringToBuffer(arg2);
+	}
 	theServer->protobuf.writeToBufferAtIndex32(theServer->protobuf._writeIndex, 0);
 
 	SendBufferToServer();

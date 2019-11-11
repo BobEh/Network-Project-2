@@ -33,6 +33,8 @@ class Server
 	Connection* _connectionArray[FD_SETSIZE];
 	int _totalSockets;
 
+	void sendBufferToAuthentication(Connection* conn);
+
 public:
 	Server(void);
 

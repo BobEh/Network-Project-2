@@ -14,7 +14,7 @@ std::string addIdToMessage(int id, const std::string &message)
 	return ss.str() + message;
 }
 
-Server::Server(void) : _listenSocket(INVALID_SOCKET), _acceptSocket(INVALID_SOCKET), _connectionArray()
+Authentication::Authentication(void) : _listenSocket(INVALID_SOCKET), _acceptSocket(INVALID_SOCKET), _connectionArray()
 {
 	_totalSockets = 0;
 	FD_ZERO(&_readSet);
@@ -29,12 +29,12 @@ Server::Server(void) : _listenSocket(INVALID_SOCKET), _acceptSocket(INVALID_SOCK
 	}
 }
 
-void Server::StopServer(void)
+void Authentication::StopServer(void)
 {
 	closesocket(_listenSocket);
 }
 
-void Server::StartServer(const std::string& portString)
+void Authentication::StartServer(const std::string& portString)
 {
 	// Convert the provided port as string to an int value
 	int port = std::stoi(portString);
@@ -48,7 +48,7 @@ void Server::StartServer(const std::string& portString)
 	printf("Successfully started the server. listening on port: %d\n", port);
 }
 
-bool Server::Init(int port)
+bool Authentication::Init(int port)
 {
 	SOCKADDR_IN	addr;
 	int result;
@@ -72,7 +72,7 @@ bool Server::Init(int port)
 
 	return true;
 }
-void Server::Update(void)
+void Authentication::Update(void)
 {
 	int result;
 
@@ -109,7 +109,7 @@ void Server::Update(void)
 	}
 }
 
-bool Server::CheckForNewClient(void)
+bool Authentication::CheckForNewClient(void)
 {
 	if (!FD_ISSET(_listenSocket, &_readSet)) return false;
 
@@ -138,7 +138,7 @@ bool Server::CheckForNewClient(void)
 	return true;
 }
 
-void Server::CreateNewUser(SOCKET socket)
+void Authentication::CreateNewUser(SOCKET socket)
 {
 	Connection* conn = new Connection(socket);
 
@@ -149,7 +149,7 @@ void Server::CreateNewUser(SOCKET socket)
 	SendMessageToUser(conn, "Master Server", "Welcome to the chat client! Join any room you want");
 }
 
-void Server::RemoveUser(int index)
+void Authentication::RemoveUser(int index)
 {
 	Connection* conn = _connectionArray[index];
 	printf("[%d] Disconnected!\n", conn->_socket);
@@ -167,7 +167,7 @@ void Server::RemoveUser(int index)
 	_totalSockets--;
 }
 
-void Server::RemoveUserFromAllRooms(Connection* conn)
+void Authentication::RemoveUserFromAllRooms(Connection* conn)
 {
 	std::map<std::string, std::vector<Connection*>>::iterator roomIt;
 	std::vector<Connection*>::iterator connIt;
@@ -181,7 +181,7 @@ void Server::RemoveUserFromAllRooms(Connection* conn)
 	}
 }
 
-void Server::MessageFromUser(Connection* conn, int index)
+void Authentication::MessageFromUser(Connection* conn, int index)
 {
 	int result = recv(conn->_socket, &((char&)(conn->protobuf[conn->_numBytes])), 512, 0);
 
@@ -227,7 +227,7 @@ void Server::MessageFromUser(Connection* conn, int index)
 	}
 }
 
-void Server::ProcessMessage(Connection* conn)
+void Authentication::ProcessMessage(Connection* conn)
 {
 	int packetSize = conn->protobuf.readFromBuffer32();
 	int messageId = conn->protobuf.readFromBuffer32();
@@ -263,7 +263,7 @@ void Server::ProcessMessage(Connection* conn)
 	}
 }
 
-void Server::UserJoinRoom(Connection* conn, std::string room)
+void Authentication::UserJoinRoom(Connection* conn, std::string room)
 {
 	std::vector<Connection*>::iterator it = find(_rooms[room].begin(), _rooms[room].end(), conn);
 	if (it != _rooms[room].end())
@@ -277,7 +277,7 @@ void Server::UserJoinRoom(Connection* conn, std::string room)
 	_rooms[room].push_back(conn);
 }
 
-void Server::UserLeaveRoom(Connection* conn, std::string room)
+void Authentication::UserLeaveRoom(Connection* conn, std::string room)
 {
 	if (_rooms.find(room) == _rooms.end())
 	{
@@ -297,7 +297,7 @@ void Server::UserLeaveRoom(Connection* conn, std::string room)
 	SendUserMessageToRoom(room, addIdToMessage(conn->_socket, "has left the room"));
 }
 
-void Server::SendUserMessageToRoom(Connection* conn, std::string room, std::string message)
+void Authentication::SendUserMessageToRoom(Connection* conn, std::string room, std::string message)
 {
 	if (_rooms.find(room) == _rooms.end())
 	{
@@ -308,7 +308,7 @@ void Server::SendUserMessageToRoom(Connection* conn, std::string room, std::stri
 	SendUserMessageToRoom(room, message.c_str());
 }
 
-void Server::SendUserMessageToRoom(std::string room, std::string message)
+void Authentication::SendUserMessageToRoom(std::string room, std::string message)
 {
 	if (_rooms.find(room) == _rooms.end())
 	{
@@ -325,7 +325,7 @@ void Server::SendUserMessageToRoom(std::string room, std::string message)
 	}
 }
 
-void Server::SendMessageToUser(Connection* conn, std::string roomName, std::string message)
+void Authentication::SendMessageToUser(Connection* conn, std::string roomName, std::string message)
 {
 	int roomNameLength = roomName.length();
 	int messageLength = message.length();
