@@ -5,7 +5,9 @@
 int main(int argc, char** argv)
 {
 	Server theServer;
-	theServer.StartServer("5150");
+	theServer.StartServer("4321");
+
+	theServer.joinAuthenticator("127.0.0.1", "1234");
 
 	while (true)
 	{
@@ -19,6 +21,4 @@ int main(int argc, char** argv)
 	}
 
 	system("Pause");
-
-	return 0;
 }

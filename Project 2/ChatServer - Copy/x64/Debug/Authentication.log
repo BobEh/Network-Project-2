@@ -1,5 +1,3 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Server.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   AuthenticationMain.cpp
-D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\AuthenticationMain.cpp(30,12): warning C4477:  'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'char *'
-D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\AuthenticationMain.cpp(30,12): warning C4313:  'printf': '%d' in format string conflicts with argument 1 of type 'char *'
   Authentication.vcxproj -> D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\x64\Debug\Authentication.exe

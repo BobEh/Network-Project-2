@@ -72,8 +72,10 @@ bool Authentication::Init(int port)
 
 	return true;
 }
-void Authentication::Update(void)
+
+std::vector<std::string> Authentication::Update(void)
 {
+	std::vector<std::string> emailAndPassword;
 	int result;
 
 	FD_ZERO(&_readSet);
@@ -89,7 +91,7 @@ void Authentication::Update(void)
 	if (Total == SOCKET_ERROR)
 	{
 		StopServer();
-		return;
+		return emailAndPassword;
 	}
 
 	if (CheckForNewClient())
@@ -104,9 +106,11 @@ void Authentication::Update(void)
 		// If this socket is in the ReadSet, read from the connection
 		if (FD_ISSET(conn->_socket, &_readSet)) {
 			Total--;
-			MessageFromUser(conn, i);
+			emailAndPassword = MessageFromServer(conn, i);
+			return emailAndPassword;
 		}
 	}
+	return emailAndPassword;
 }
 
 bool Authentication::CheckForNewClient(void)
@@ -146,7 +150,7 @@ void Authentication::CreateNewUser(SOCKET socket)
 	_totalSockets++;
 
 	printf("[%d] Connected!\n", socket);
-	SendMessageToUser(conn, "Master Server", "Welcome to the chat client! Join any room you want");
+	SendMessageToServer(conn, "Master Server", "Welcome to the chat client! Join any room you want");
 }
 
 void Authentication::RemoveUser(int index)
@@ -181,32 +185,10 @@ void Authentication::RemoveUserFromAllRooms(Connection* conn)
 	}
 }
 
-void Authentication::MessageFromUser(Connection* conn, int index)
+std::vector<std::string> Authentication::MessageFromServer(Connection* conn, int index)
 {
+	std::vector<std::string> emailAndPassword;
 	int result = recv(conn->_socket, &((char&)(conn->protobuf[conn->_numBytes])), 512, 0);
-
-	if (result == SOCKET_ERROR)
-	{
-		int WSAErrorCode = WSAGetLastError();
-
-		if (WSAErrorCode != WSAEWOULDBLOCK)
-		{
-			RemoveUser(index);
-			return;
-		}
-
-		if (WSAErrorCode == WSAEHOSTUNREACH)
-		{
-			printf("Disconnected from client...\n");
-		}
-		return;
-	}
-
-	if (result == 0)
-	{
-		RemoveUser(index);
-		return;
-	}
 
 	conn->_numBytes += result;
 	if (conn->_numBytes >= 4 && conn->_length == 0)
@@ -222,110 +204,74 @@ void Authentication::MessageFromUser(Connection* conn, int index)
 		conn->_length = 0;
 		conn->_numBytes = 0;
 
-		ProcessMessage(conn);
+		emailAndPassword = ProcessMessage(conn);
 		conn->protobuf.Clear();
 	}
+	return emailAndPassword;
 }
 
-void Authentication::ProcessMessage(Connection* conn)
+std::vector<std::string> Authentication::ProcessMessage(Connection* conn)
 {
+	std::vector<std::string> emailAndPassword;
 	int packetSize = conn->protobuf.readFromBuffer32();
 	int messageId = conn->protobuf.readFromBuffer32();
 
 	switch (messageId)
 	{
-		case MessageType::JoinRoom:
+		case MessageType::AuthUser:
 		{
-			int roomLength = conn->protobuf.readFromBuffer32();
-			std::string roomName = conn->protobuf.readStringFromBuffer(roomLength);
-			UserJoinRoom(conn, roomName);
+			emailAndPassword.push_back("AuthUser");
+			int emailLength = conn->protobuf.readFromBuffer32();
+			std::string email = conn->protobuf.readStringFromBuffer(emailLength);
+			emailAndPassword.push_back(email);
+			int passwordLength = conn->protobuf.readFromBuffer32();
+			std::string password = conn->protobuf.readStringFromBuffer(passwordLength);
+			emailAndPassword.push_back(password);
+
+			std::cout << "Recieved data:\n";
+			for (int i = 0; i < emailAndPassword.size(); i++)
+			{
+				std::cout << emailAndPassword.at(i) << std::endl;
+			}
+
 			break;
-
 		}
-
-		case MessageType::LeaveRoom:
+		case MessageType::AddUser:
 		{
-			int roomLength = conn->protobuf.readFromBuffer32();
-			std::string roomName = conn->protobuf.readStringFromBuffer(roomLength);
-			UserLeaveRoom(conn, roomName);
-			break;
-		}
+			emailAndPassword.push_back("AddUser");
+			int emailLength = conn->protobuf.readFromBuffer32();
+			std::string email = conn->protobuf.readStringFromBuffer(emailLength);
+			emailAndPassword.push_back(email);
+			int passwordLength = conn->protobuf.readFromBuffer32();
+			std::string password = conn->protobuf.readStringFromBuffer(passwordLength);
+			emailAndPassword.push_back(password);
 
-		case  MessageType::MessageRoom:
-		{
-			int roomLength = conn->protobuf.readFromBuffer32();
-			std::string roomName = conn->protobuf.readStringFromBuffer(roomLength);
-			int messageLength = conn->protobuf.readFromBuffer32();
-			std::string userMessage = conn->protobuf.readStringFromBuffer(messageLength);
-			SendUserMessageToRoom(conn, roomName, addIdToMessage(conn->_socket, userMessage));
+			std::cout << "Recieved data:\n";
+			for (int i = 0; i < emailAndPassword.size(); i++)
+			{
+				std::cout << emailAndPassword.at(i) << std::endl;
+			}
+
 			break;
 		}
 	}
+	return emailAndPassword;
 }
 
-void Authentication::UserJoinRoom(Connection* conn, std::string room)
+void Authentication::ServerJoinRoom(Connection* conn, std::string room)
 {
 	std::vector<Connection*>::iterator it = find(_rooms[room].begin(), _rooms[room].end(), conn);
 	if (it != _rooms[room].end())
 	{
-		SendMessageToUser(conn, room, "Already in that room.");
+		SendMessageToServer(conn, room, "Already in that room.");
 		return;
 	}
 
-	SendUserMessageToRoom(room, addIdToMessage(conn->_socket, " joined the room"));
-	SendMessageToUser(conn, room, "Successfully joined the room!");
+	SendMessageToServer(conn, room, "Successfully joined the room!");
 	_rooms[room].push_back(conn);
 }
 
-void Authentication::UserLeaveRoom(Connection* conn, std::string room)
-{
-	if (_rooms.find(room) == _rooms.end())
-	{
-		SendMessageToUser(conn, room, "You can only leave rooms that your are in.");
-		return;
-	}
-
-	std::vector<Connection*>::iterator it = find(_rooms[room].begin(), _rooms[room].end(), conn);
-	if (it == _rooms[room].end())
-	{
-		SendMessageToUser(conn, room, "You can only leave rooms that your are in.");
-		return;
-	}
-
-	SendMessageToUser(conn, room, "You have left the room!");
-	_rooms[room].erase(it);
-	SendUserMessageToRoom(room, addIdToMessage(conn->_socket, "has left the room"));
-}
-
-void Authentication::SendUserMessageToRoom(Connection* conn, std::string room, std::string message)
-{
-	if (_rooms.find(room) == _rooms.end())
-	{
-		SendMessageToUser(conn, room, "Please join that room before sending this message.");
-		return;
-	}
-
-	SendUserMessageToRoom(room, message.c_str());
-}
-
-void Authentication::SendUserMessageToRoom(std::string room, std::string message)
-{
-	if (_rooms.find(room) == _rooms.end())
-	{
-		printf("[ERR] Room '%s' does not exist!\n", room.c_str());
-		return;
-	}
-
-	printf("[BROADCAST] [%s] %s\n", room.c_str(), message.c_str());
-
-	std::vector<Connection*> clientsInRoom = _rooms[room];
-	for (std::vector<Connection*>::iterator it = clientsInRoom.begin(); it != clientsInRoom.end(); it++)
-	{
-		SendMessageToUser(*it, room, message);
-	}
-}
-
-void Authentication::SendMessageToUser(Connection* conn, std::string roomName, std::string message)
+void Authentication::SendMessageToServer(Connection* conn, std::string roomName, std::string message)
 {
 	int roomNameLength = roomName.length();
 	int messageLength = message.length();
@@ -340,7 +286,7 @@ void Authentication::SendMessageToUser(Connection* conn, std::string roomName, s
 	conn->protobuf.writeStringToBuffer(message);
 
 	int result = send(conn->_socket, &((char&)conn->protobuf[0]), conn->protobuf._writeIndex, 0);
-	
+
 	if (result == 0)
 	{
 		printf("Result is 0");

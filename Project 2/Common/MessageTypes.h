@@ -7,5 +7,6 @@ enum MessageType
 	LeaveRoom,
 	MessageRoom,
 	ReceiveMessage,
-	AuthUser
+	AuthUser,
+	AddUser
 };

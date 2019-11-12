@@ -8,8 +8,6 @@
 
 class Server
 {
-	void joinAuthenticator(std::string address, std::string port);
-
 	bool Init(int port);
 	bool CheckForNewClient(void);
 
@@ -41,6 +39,7 @@ public:
 	Server(void);
 
 	void StartServer(const std::string& port);
+	void joinAuthenticator(std::string address, std::string port);
 	void StopServer(void);
 
 	Connection* theAuthenticator;

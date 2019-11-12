@@ -68,7 +68,11 @@ void User::joinServer(std::string address, std::string port)
 		return;
 	}
 }
-void User::Authenticate(std::string email, std::string password)
+void User::AuthenticateWeb(MessageType type, std::string email, std::string password)
+{
+
+}
+void User::CreateAccountWeb(MessageType type, std::string email, std::string password)
 {
 
 }
@@ -126,10 +130,12 @@ void User::processMessage(Connection* server)
 		SendMessageToRoom(name, message);
 	}
 }
+
 void User::SendMessageToRoom(std::string room, std::string message)
 {
 	printf("\x1B[2K\r[%s] %s\n", room.c_str(), message.c_str());
 }
+
 void User::ConfigureMessage(MessageType type, std::string arg1, std::string arg2, std::string message)
 {
 	theServer->protobuf.Clear();
@@ -153,10 +159,17 @@ void User::ConfigureMessage(MessageType type, std::string arg1, std::string arg2
 	{
 		theServer->protobuf.writeToBuffer32(arg1.length());
 		theServer->protobuf.writeStringToBuffer(arg1);
-		theServer->protobuf.writeToBuffer32(message.length());
-		theServer->protobuf.writeStringToBuffer(message);
+		theServer->protobuf.writeToBuffer32(arg2.length());
+		theServer->protobuf.writeStringToBuffer(arg2);
 	}
 	else if (type == AuthUser)
+	{
+		theServer->protobuf.writeToBuffer32(arg1.length());
+		theServer->protobuf.writeStringToBuffer(arg1);
+		theServer->protobuf.writeToBuffer32(arg2.length());
+		theServer->protobuf.writeStringToBuffer(arg2);
+	}
+	else if (type == AddUser)
 	{
 		theServer->protobuf.writeToBuffer32(arg1.length());
 		theServer->protobuf.writeStringToBuffer(arg1);

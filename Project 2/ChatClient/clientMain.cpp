@@ -82,7 +82,11 @@ void ProcessInput()
 	}
 	else if (command == "/auth")
 	{
-		theUser.Authenticate(arg1, arg2);
+		theUser.ConfigureMessage(AuthUser, arg1, arg2, message);
+	}
+	else if (command == "/addUser")
+	{
+		theUser.ConfigureMessage(AddUser, arg1, arg2, message);
 	}
 }
 
@@ -110,7 +114,7 @@ int main(int argc, char** argv)
 
 	printf("Welcome to Super Chat!\n");
 	printf("Type /help for a list of commands.\n");
-	printf("Connect to the server with /connect 127.0.0.1 5150\n");
+	printf("Connect to the server with /connect 127.0.0.1 4321\n");
 
 	running = true;
 	int ch;

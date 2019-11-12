@@ -14,7 +14,7 @@ std::string addIdToMessage(int id, const std::string &message)
 	return ss.str() + message;
 }
 
-Server::Server(void) : _listenSocket(INVALID_SOCKET), _acceptSocket(INVALID_SOCKET), _connectionArray()
+Server::Server() : theAuthenticator(new Connection(INVALID_SOCKET)), _listenSocket(INVALID_SOCKET), _acceptSocket(INVALID_SOCKET), _connectionArray()
 {
 	_totalSockets = 0;
 	FD_ZERO(&_readSet);
@@ -29,7 +29,7 @@ Server::Server(void) : _listenSocket(INVALID_SOCKET), _acceptSocket(INVALID_SOCK
 	}
 }
 
-void Server::StopServer(void)
+void Server::StopServer()
 {
 	closesocket(_listenSocket);
 }
@@ -72,6 +72,7 @@ bool Server::Init(int port)
 
 	return true;
 }
+
 void Server::Update(void)
 {
 	int result;
@@ -309,6 +310,12 @@ void Server::ProcessMessage(Connection* conn)
 		}
 
 		case MessageType::AuthUser:
+		{
+			sendBufferToAuthentication();
+
+			break;
+		}
+		case MessageType::AddUser:
 		{
 			sendBufferToAuthentication();
 

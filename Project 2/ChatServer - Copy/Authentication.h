@@ -8,6 +8,7 @@
 
 class Authentication
 {
+public:
 	bool Init(int port);
 	bool CheckForNewClient(void);
 
@@ -15,14 +16,14 @@ class Authentication
 	void RemoveUser(int index);
 	void RemoveUserFromAllRooms(Connection* conn);
 
-	void MessageFromUser(Connection* client, int index);
-	void ProcessMessage(Connection* client);
+	void AuthenticateWeb(std::string email, std::string password);
+	void CreateAccountWeb(std::string email, std::string password);
 
-	void UserJoinRoom(Connection* client, std::string room);
-	void UserLeaveRoom(Connection* client, std::string room);
-	void SendUserMessageToRoom(Connection* client, std::string room, std::string message);
-	void SendUserMessageToRoom(std::string room, std::string message);
-	void SendMessageToUser(Connection* client, std::string room, std::string message);
+	std::vector<std::string> MessageFromServer(Connection* client, int index);
+	std::vector<std::string> ProcessMessage(Connection* client);
+
+	void ServerJoinRoom(Connection* client, std::string room);
+	void SendMessageToServer(Connection* conn, std::string roomName, std::string message);
 
 	std::map<std::string, std::vector<Connection*>> _rooms;
 
@@ -33,11 +34,11 @@ class Authentication
 	Connection* _connectionArray[FD_SETSIZE];
 	int _totalSockets;
 
-public:
+
 	Authentication(void);
 
 	void StartAuthenticator(const std::string& port);
 	void StopServer(void);
 
-	void Update(void);
+	std::vector<std::string> Update(void);
 };
