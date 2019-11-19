@@ -150,19 +150,13 @@ void User::ConfigureMessage(MessageType type, std::string arg1, std::string arg2
 
 	if (type == JoinRoom)
 	{
-		if (this->authenticated == false)
-		{
-			std::cout << "Please log in before using the chat!\n";
-			std::cout << "Command to log in is /auth <email> <password>\n";
-			passBuffer = false;
+		//std::cout << "Please log in before using the chat!\n";
+		//std::cout << "Command to log in is /auth <email> <password>\n";
+		passBuffer = false;
 
-		}
-		else
-		{
-			passBuffer = true;
-			theServer->protobuf.writeToBuffer32(arg1.length());
-			theServer->protobuf.writeStringToBuffer(arg1);
-		}
+		passBuffer = true;
+		theServer->protobuf.writeToBuffer32(arg1.length());
+		theServer->protobuf.writeStringToBuffer(arg1);
 	}
 
 	else if (type == LeaveRoom)
@@ -181,7 +175,7 @@ void User::ConfigureMessage(MessageType type, std::string arg1, std::string arg2
 	else if (type == AuthUser)
 	{
 		passBuffer = true;
-		std::cout << "Writing information to theServer->protobuf\n";
+		//std::cout << "Writing information to theServer->protobuf\n";
 		theServer->protobuf.writeToBuffer32(arg1.length());
 		theServer->protobuf.writeStringToBuffer(arg1);
 		theServer->protobuf.writeToBuffer32(arg2.length());
@@ -190,7 +184,7 @@ void User::ConfigureMessage(MessageType type, std::string arg1, std::string arg2
 	else if (type == AddUser)
 	{
 		passBuffer = true;
-		std::cout << "Writing information to theServer->protobuf\n";
+		//std::cout << "Writing information to theServer->protobuf\n";
 		theServer->protobuf.writeToBuffer32(arg1.length());
 		theServer->protobuf.writeStringToBuffer(arg1);
 		theServer->protobuf.writeToBuffer32(arg2.length());
@@ -199,13 +193,13 @@ void User::ConfigureMessage(MessageType type, std::string arg1, std::string arg2
 	if (passBuffer)
 	{
 		theServer->protobuf.writeToBufferAtIndex32(theServer->protobuf._writeIndex, 0);
-		std::cout << "Sending buffer to theServer\ntheServer socket: " << theServer->_socket << std::endl;
+		//std::cout << "Sending buffer to theServer\ntheServer socket: " << theServer->_socket << std::endl;
 		SendBufferToServer();
 	}
 }
 void User::SendBufferToServer()
 {
-	std::cout << "Preparing to send buffer to server on socket (theServer->_socket): " << theServer->_socket << std::endl;
+	//std::cout << "Preparing to send buffer to server on socket (theServer->_socket): " << theServer->_socket << std::endl;
 	int result = send(theServer->_socket, &(char&)(theServer->protobuf[0]), theServer->protobuf._writeIndex, 0);
 
 	if (result == 0)

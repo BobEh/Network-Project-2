@@ -1,3 +1,22 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Server.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Authentication.cpp
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(84,29): warning C4018:  '<': signed/unsigned mismatch
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(111,42): warning C4018:  '<': signed/unsigned mismatch
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(79,6): warning C4101:  'result': unreferenced local variable
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(166,9): warning C4477:  'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'SOCKET'
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(166,9): message :  consider using '%lld' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(166,9): message :  consider using '%Id' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(166,9): message :  consider using '%I64d' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(173,9): warning C4477:  'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'SOCKET'
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(173,9): message :  consider using '%lld' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(173,9): message :  consider using '%Id' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(173,9): message :  consider using '%I64d' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(180,33): warning C4018:  '<': signed/unsigned mismatch
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(234,28): warning C4244:  'return': conversion from 'SOCKET' to 'int', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(307,40): warning C4267:  'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(308,38): warning C4267:  'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(314,50): warning C4267:  'argument': conversion from 'size_t' to 'uint32_t', possible loss of data
   AuthenticationMain.cpp
+  Generating Code...
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer - Copy\Authentication.cpp(316,49): warning C4267:  'argument': conversion from 'size_t' to 'uint32_t', possible loss of data
   Authentication.vcxproj -> D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\x64\Debug\Authentication.exe
