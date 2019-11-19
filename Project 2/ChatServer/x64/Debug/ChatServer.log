@@ -1,2 +1,21 @@
-﻿  serverMain.cpp
+﻿  Server.cpp
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(85,29): warning C4018:  '<': signed/unsigned mismatch
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(112,42): warning C4018:  '<': signed/unsigned mismatch
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(80,6): warning C4101:  'result': unreferenced local variable
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(163,9): warning C4477:  'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'SOCKET'
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(163,9): message :  consider using '%lld' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(163,9): message :  consider using '%Id' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(163,9): message :  consider using '%I64d' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(170,9): warning C4477:  'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'SOCKET'
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(170,9): message :  consider using '%lld' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(170,9): message :  consider using '%Id' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(170,9): message :  consider using '%I64d' in the format string
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(177,33): warning C4018:  '<': signed/unsigned mismatch
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(340,61): warning C4244:  'argument': conversion from 'SOCKET' to 'int', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(407,49): warning C4244:  'argument': conversion from 'SOCKET' to 'int', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(429,49): warning C4244:  'argument': conversion from 'SOCKET' to 'int', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(462,40): warning C4267:  'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(463,38): warning C4267:  'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(469,50): warning C4267:  'argument': conversion from 'size_t' to 'uint32_t', possible loss of data
+D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\ChatServer\Server.cpp(471,49): warning C4267:  'argument': conversion from 'size_t' to 'uint32_t', possible loss of data
   ChatServer.vcxproj -> D:\School - GDP\Network Programming\Projects\Project 2 - Git\Network-Project-2\Project 2\x64\Debug\Server.exe

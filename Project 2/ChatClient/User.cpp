@@ -11,6 +11,8 @@ User::User() : theServer(new Connection(INVALID_SOCKET))
 	WSAData WSAData;
 	int result;
 
+	this->authenticated = false;
+
 	result = WSAStartup(MAKEWORD(2, 2), &WSAData);
 	if (result != 0)
 	{
@@ -39,10 +41,11 @@ void User::joinServer(std::string address, std::string port)
 	}
 
 	std::cout << "Connecting to the server\n";
+	
 	result = connect(theServer->_socket, (struct sockaddr*) & server, sizeof(server));
 	if (result == SOCKET_ERROR)
 	{
-
+		
 		pollfd poll;
 		poll.fd = theServer->_socket;
 		poll.events = POLLRDNORM | POLLWRNORM;
@@ -67,6 +70,7 @@ void User::joinServer(std::string address, std::string port)
 		theServer->_socket = INVALID_SOCKET;
 		return;
 	}
+	std::cout << "theServer socket: " << theServer->_socket << std::endl;
 }
 void User::AuthenticateWeb(MessageType type, std::string email, std::string password)
 {
@@ -142,11 +146,23 @@ void User::ConfigureMessage(MessageType type, std::string arg1, std::string arg2
 	theServer->protobuf.writeToBuffer32(0);
 	theServer->protobuf.writeToBuffer32(type);
 
+	bool passBuffer = true;
 
 	if (type == JoinRoom)
 	{
-		theServer->protobuf.writeToBuffer32(arg1.length());
-		theServer->protobuf.writeStringToBuffer(arg1);
+		if (this->authenticated == false)
+		{
+			std::cout << "Please log in before using the chat!\n";
+			std::cout << "Command to log in is /auth <email> <password>\n";
+			passBuffer = false;
+
+		}
+		else
+		{
+			passBuffer = true;
+			theServer->protobuf.writeToBuffer32(arg1.length());
+			theServer->protobuf.writeStringToBuffer(arg1);
+		}
 	}
 
 	else if (type == LeaveRoom)
@@ -164,6 +180,8 @@ void User::ConfigureMessage(MessageType type, std::string arg1, std::string arg2
 	}
 	else if (type == AuthUser)
 	{
+		passBuffer = true;
+		std::cout << "Writing information to theServer->protobuf\n";
 		theServer->protobuf.writeToBuffer32(arg1.length());
 		theServer->protobuf.writeStringToBuffer(arg1);
 		theServer->protobuf.writeToBuffer32(arg2.length());
@@ -171,17 +189,23 @@ void User::ConfigureMessage(MessageType type, std::string arg1, std::string arg2
 	}
 	else if (type == AddUser)
 	{
+		passBuffer = true;
+		std::cout << "Writing information to theServer->protobuf\n";
 		theServer->protobuf.writeToBuffer32(arg1.length());
 		theServer->protobuf.writeStringToBuffer(arg1);
 		theServer->protobuf.writeToBuffer32(arg2.length());
 		theServer->protobuf.writeStringToBuffer(arg2);
 	}
-	theServer->protobuf.writeToBufferAtIndex32(theServer->protobuf._writeIndex, 0);
-
-	SendBufferToServer();
+	if (passBuffer)
+	{
+		theServer->protobuf.writeToBufferAtIndex32(theServer->protobuf._writeIndex, 0);
+		std::cout << "Sending buffer to theServer\ntheServer socket: " << theServer->_socket << std::endl;
+		SendBufferToServer();
+	}
 }
 void User::SendBufferToServer()
 {
+	std::cout << "Preparing to send buffer to server on socket (theServer->_socket): " << theServer->_socket << std::endl;
 	int result = send(theServer->_socket, &(char&)(theServer->protobuf[0]), theServer->protobuf._writeIndex, 0);
 
 	if (result == 0)

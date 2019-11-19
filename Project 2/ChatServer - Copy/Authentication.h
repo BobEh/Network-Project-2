@@ -19,6 +19,8 @@ public:
 	void AuthenticateWeb(std::string email, std::string password);
 	void CreateAccountWeb(std::string email, std::string password);
 
+	int getId();
+
 	std::vector<std::string> MessageFromServer(Connection* client, int index);
 	std::vector<std::string> ProcessMessage(Connection* client);
 
@@ -34,6 +36,10 @@ public:
 	Connection* _connectionArray[FD_SETSIZE];
 	int _totalSockets;
 
+	//void authSuccess();
+	//void addSuccess();
+	//void authFailed();
+	//void addFailed();
 
 	Authentication(void);
 

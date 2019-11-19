@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+#include <openssl/sha.h>
+
 #include "network_headers.h"
 
 class User
@@ -22,6 +24,7 @@ public:
 private:
 	void processMessage(Connection* server);
 	void SendMessageToRoom(std::string room, std::string message);
+	bool authenticated;
 
 	Connection* theServer;
 };

@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+Server theServer;
+
 std::string addIdToMessage(int id, const std::string &message)
 {
 	std::stringstream ss;
@@ -98,13 +100,24 @@ void Server::Update(void)
 		Total--;
 	}
 
+	//std::cout << "This is about to go into the Update() function for loop\ncurrent socket: " << _connectionArray[0] << std::endl;
+	std::cout << "Total sockets " << _totalSockets << std::endl;
+	//std::cout << "Which is socket: " << _connectionArray;
+	for (int i = 0; i < _totalSockets; i++)
+	{
+		Connection* conn = _connectionArray[i];
+		std::cout << "Which is socket: " << conn->_socket << std::endl;
+	}
+
 	for (unsigned int i = 0; Total > 0 && i < _totalSockets; i++) {
 		// get current socket information from socketarray
 		Connection* conn = _connectionArray[i];
+		std::cout << "Current conn socket: " << conn->_socket << std::endl;
 
 		// If this socket is in the ReadSet, read from the connection
 		if (FD_ISSET(conn->_socket, &_readSet)) {
 			Total--;
+			std::cout << "Waiting for message on socket: " << conn->_socket << std::endl;
 			MessageFromUser(conn, i);
 		}
 	}
@@ -113,8 +126,9 @@ void Server::Update(void)
 bool Server::CheckForNewClient(void)
 {
 	if (!FD_ISSET(_listenSocket, &_readSet)) return false;
-
+	std::cout << "listen socket: " << _listenSocket << std::endl;
 	_acceptSocket = accept(_listenSocket, NULL, NULL);
+	std::cout << "accept socket: " << _acceptSocket << std::endl;
 	if (_acceptSocket == INVALID_SOCKET)
 	{
 		if (WSAGetLastError() != WSAEWOULDBLOCK)
@@ -184,6 +198,7 @@ void Server::RemoveUserFromAllRooms(Connection* conn)
 
 void Server::MessageFromUser(Connection* conn, int index)
 {
+	std::cout << "Recieving buffer from user on socket: " << conn->_socket << std::endl;
 	int result = recv(conn->_socket, &((char&)(conn->protobuf[conn->_numBytes])), 512, 0);
 
 	if (result == SOCKET_ERROR)
@@ -234,6 +249,7 @@ void Server::joinAuthenticator(std::string address, std::string port)
 	strcpy_s(serverIp, sizeof(serverIp), address.c_str());
 
 	theAuthenticator->_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	std::cout << "Socket set to: " << theAuthenticator->_socket << std::endl;
 
 	server.sin_family = AF_INET;
 	server.sin_port = htons(portInt);
@@ -244,8 +260,10 @@ void Server::joinAuthenticator(std::string address, std::string port)
 		CopyMemory(&server.sin_addr, host->h_addr_list[0], host->h_length);
 	}
 
-	std::cout << "Connecting to the server\n";
+	std::cout << "Connecting to the authenticator\n";
+	
 	result = connect(theAuthenticator->_socket, (struct sockaddr*) & server, sizeof(server));
+	std::cout << "theAuthenticator socket: " << theAuthenticator->_socket << std::endl;
 	if (result == SOCKET_ERROR)
 	{
 
@@ -277,8 +295,11 @@ void Server::joinAuthenticator(std::string address, std::string port)
 
 void Server::ProcessMessage(Connection* conn)
 {
+	theAuthenticator->protobuf.Clear();
 	int packetSize = conn->protobuf.readFromBuffer32();
+	std::cout << "packetSize: " << packetSize << std::endl;
 	int messageId = conn->protobuf.readFromBuffer32();
+	std::cout << "messageId: " << messageId << std::endl;
 
 	switch (messageId)
 	{
@@ -291,6 +312,16 @@ void Server::ProcessMessage(Connection* conn)
 
 		}
 
+		//case MessageType::ReceiveMessage:
+		//{
+		//	int length = conn->protobuf.readFromBuffer32();
+		//	std::string name = conn->protobuf.readStringFromBuffer(length);
+		//	int messageLength = conn->protobuf.readFromBuffer32();
+		//	std::string message = conn->protobuf.readStringFromBuffer(messageLength);
+		//	SendUserMessageToRoom(name, message);
+		//	break;
+		//}
+
 		case MessageType::LeaveRoom:
 		{
 			int roomLength = conn->protobuf.readFromBuffer32();
@@ -301,6 +332,7 @@ void Server::ProcessMessage(Connection* conn)
 
 		case  MessageType::MessageRoom:
 		{
+			std::cout << "Preparing to send message on socket: " << conn->_socket << std::endl;
 			int roomLength = conn->protobuf.readFromBuffer32();
 			std::string roomName = conn->protobuf.readStringFromBuffer(roomLength);
 			int messageLength = conn->protobuf.readFromBuffer32();
@@ -311,23 +343,52 @@ void Server::ProcessMessage(Connection* conn)
 
 		case MessageType::AuthUser:
 		{
-			sendBufferToAuthentication();
 
+			int arg1Length = conn->protobuf.readFromBuffer32();
+			std::string arg1 = conn->protobuf.readStringFromBuffer(arg1Length);
+			int arg2Length = conn->protobuf.readFromBuffer32();
+			std::string arg2 = conn->protobuf.readStringFromBuffer(arg2Length);
+			std::cout << "Preparing to send buffer to authenticator on socket: " << theAuthenticator->_socket << std::endl;
+			//int result = send(theAuthenticator->_socket, &(char&)(theAuthenticator->protobuf[0]), theAuthenticator->protobuf._writeIndex, 0);
+			//theAuthenticator->protobuf.writeToBuffer32(conn->protobuf.readFromBuffer32());
+			//theAuthenticator->protobuf.writeStringToBuffer(conn->protobuf.readStringFromBuffer());
+			theAuthenticator->protobuf.writeToBuffer32(packetSize);
+			theAuthenticator->protobuf.writeToBuffer32(messageId);
+			theAuthenticator->protobuf.writeToBuffer32(arg1Length);
+			theAuthenticator->protobuf.writeStringToBuffer(arg1);
+			theAuthenticator->protobuf.writeToBuffer32(arg2Length);
+			theAuthenticator->protobuf.writeStringToBuffer(arg2);
 			break;
 		}
 		case MessageType::AddUser:
 		{
-			sendBufferToAuthentication();
-
-			break;
+			int arg1Length = conn->protobuf.readFromBuffer32();
+			std::string arg1 = conn->protobuf.readStringFromBuffer(arg1Length);
+			int arg2Length = conn->protobuf.readFromBuffer32();
+			std::string arg2 = conn->protobuf.readStringFromBuffer(arg2Length);
+			std::cout << "Preparing to send buffer to authenticator on socket: " << theAuthenticator->_socket << std::endl;
+			//int result = send(theAuthenticator->_socket, &(char&)(theAuthenticator->protobuf[0]), theAuthenticator->protobuf._writeIndex, 0);
+			//theAuthenticator->protobuf.writeToBuffer32(conn->protobuf.readFromBuffer32());
+			//theAuthenticator->protobuf.writeStringToBuffer(conn->protobuf.readStringFromBuffer());
+			theAuthenticator->protobuf.writeToBuffer32(packetSize);
+			theAuthenticator->protobuf.writeToBuffer32(messageId);
+			theAuthenticator->protobuf.writeToBuffer32(arg1Length);
+			theAuthenticator->protobuf.writeStringToBuffer(arg1);
+			theAuthenticator->protobuf.writeToBuffer32(arg2Length);
+			theAuthenticator->protobuf.writeStringToBuffer(arg2);
 		}
 	}
+	theAuthenticator->protobuf.writeToBufferAtIndex32(theAuthenticator->protobuf._writeIndex, 0);
+	std::cout << "Sending buffer to theServer\ntheServer socket: " << theAuthenticator->_socket << std::endl;
+	sendBufferToAuthentication();
 }
 
 void Server::sendBufferToAuthentication()
 {
+	std::cout << "Socket that this will be sent on: " << theAuthenticator->_socket;
 	int result = send(theAuthenticator->_socket, &(char&)(theAuthenticator->protobuf[0]), theAuthenticator->protobuf._writeIndex, 0);
-
+	theAuthenticator->protobuf._writeIndex = 0;
+	theAuthenticator->protobuf._readIndex = 0;
 	if (result == 0)
 	{
 		return;

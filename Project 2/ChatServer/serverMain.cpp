@@ -7,7 +7,7 @@ int main(int argc, char** argv)
 	Server theServer;
 	theServer.StartServer("4321");
 
-	theServer.joinAuthenticator("127.0.0.1", "1234");
+	theServer.joinAuthenticator("127.0.0.1", "4567");
 
 	while (true)
 	{

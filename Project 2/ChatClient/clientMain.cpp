@@ -2,6 +2,10 @@
 
 #include <conio.h>
 #include <cctype>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <iomanip>
 
 #define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
 #define DISABLE_NEWLINE_AUTO_RETURN  0x0008
@@ -59,6 +63,21 @@ void ParseInput(std::string& command, std::string& arg1, std::string& arg2, std:
 	}
 }
 
+std::string sha256(const std::string str)
+{
+	unsigned char hash[SHA256_DIGEST_LENGTH];
+	SHA256_CTX sha256;
+	SHA256_Init(&sha256);
+	SHA256_Update(&sha256, str.c_str(), str.size());
+	SHA256_Final(hash, &sha256);
+	std::stringstream ss;
+	for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
+	{
+		ss << std::hex << std::setw(2) << std::setfill('0') << (int)hash[i];
+	}
+	return ss.str();
+}
+
 void ProcessInput()
 {
 	std::string command;
@@ -82,10 +101,13 @@ void ProcessInput()
 	}
 	else if (command == "/auth")
 	{
+		arg2 = sha256(arg2);
 		theUser.ConfigureMessage(AuthUser, arg1, arg2, message);
 	}
-	else if (command == "/addUser")
+	else if (command == "/adduser")
 	{
+		arg2 = sha256(arg2);
+		std::cout << "Adding a new user.\n";
 		theUser.ConfigureMessage(AddUser, arg1, arg2, message);
 	}
 }
